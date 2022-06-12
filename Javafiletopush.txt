@@ -1,0 +1,94 @@
+package com.adactin.com;
+
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.WebDriver;
+
+import com.pom.com.Hotel_Booking;
+import com.pom.com.Login;
+import com.pom.com.Logout;
+import com.pom.com.Search_Hotel;
+import com.reader.com.FileReaderManager;
+
+import combasiccom.Base_Class;
+
+public class AdactinRunner extends Base_Class {
+
+	public static WebDriver driver;
+	
+	public static void main(String[] args) throws IOException {
+		
+		driver = browserlaunch("Chrome");
+		
+		FileReaderManager.getInstanceFR();
+		launchUrl(FileReaderManager.getInstanceCR().getUrl());
+		
+		Login login = new Login(driver);
+		
+		sendValues(login.getUsername(), "VinodhaP");
+		
+		sendValues(login.getPassword(), "Vino@12");
+		
+		clickOnElement(login.getLoginbtn());
+		
+		System.out.println("Login Success");
+		
+		
+		Search_Hotel S1 = new Search_Hotel(driver);
+		
+		singleDropdown(S1.getLocation(), "value", "Melbourne");
+		singleDropdown(S1.getHotel(), "value", "Hotel Sunshine");
+		singleDropdown(S1.getRoom(), "value", "Double");
+		singleDropdown(S1.getNoroom(), "value", "3");
+		clear(S1.getCheckindate());
+		sendValues(S1.getCheckindate(), "20/05/2022");
+		clear(S1.getCheckoutdate());
+		sendValues(S1.getCheckoutdate(), "25/05/2022");
+		singleDropdown(S1.getAdultroom(), "value", "3");
+		singleDropdown(S1.getChildroom(), "value", "4");
+		clickOnElement(S1.getSearchbtn());
+		
+		System.out.println("Search Hotel Success");
+		
+		
+		Hotel_Booking h = new Hotel_Booking(driver);
+		clickOnElement(h.getRadiobtn());
+		clickOnElement(h.getContinuebtn());
+		sendValues(h.getFirstname(), "Vinodha");
+		sendValues(h.getLastname(), "P");
+		sendValues(h.getBillingadd(), "No12 big Street Chennai");
+		sendValues(h.getCreditno(), "9874563210123456");
+		singleDropdown(h.getCredittyp(), "value", "MAST");
+		singleDropdown(h.getExpriydate(), "value", "9");
+		singleDropdown(h.getExpriyear(), "value", "2022");
+		sendValues(h.getCvvno(), "321");
+		clickOnElement(h.getBook());
+		driver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+
+		
+		System.out.println("Booking Success");
+		
+		Logout lg= new Logout(driver);
+		clickOnElement(lg.getMylinerary());
+		clickOnElement(lg.getCheckmark());
+		
+		org.openqa.selenium.JavascriptExecutor js = (org.openqa.selenium.JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,2000)", "");
+		
+		clickOnElement(lg.getCancel());
+		Logout.alretAccept();
+		js.executeScript("window.scrollBy(0,2000)", "");
+		clickOnElement(lg.getLogoutbtn());
+		
+		System.out.println("Logout Successfully Completed");
+		
+		
+		
+		
+		
+	}
+	
+}
