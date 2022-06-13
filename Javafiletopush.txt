@@ -1,1 +1,40 @@
-java is object oriented programming language
+package com.testrunner.com;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.openqa.selenium.WebDriver;
+
+import combasiccom.Base_Class;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+
+//@Runwith
+//@CucumberOptions()
+//@BeforeClass
+//@AfterClass
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features = "src\\test\\java\\com\\feature\\com", glue ="com.stepdefinition.com",
+monochrome =  true,
+plugin = {"pretty", "html:Reports/report.html","json:Reports/jsonReport.json"})
+//"com.cucumber.listener.ExtentCucumberFormatter:target/cucumber-reports/report.html"})
+
+
+public class AdactinRunner {
+
+	public static WebDriver driver;
+
+	@BeforeClass
+	public static void setup() {
+		driver = Base_Class.browserlaunch("Chrome");
+
+	}
+
+	@AfterClass
+	public static void tearDown() {
+
+		Base_Class.closeWindow();
+		System.out.println("Processed Successfully");
+	}
+}
